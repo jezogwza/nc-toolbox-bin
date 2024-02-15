@@ -1,0 +1,15 @@
+bin/
+cli/
+tmp/
+report/
+out/
+
+# IDE directories
+.vscode/
+.idea/
+
+# Unit tesing coverage
+cover.out
+
+# Build Artifacts
+*.tgz

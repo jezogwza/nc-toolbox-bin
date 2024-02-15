@@ -1,0 +1,3 @@
+[submodule "nc-common-tools"]
+	path = nc-common-tools
+	url = ../nc-common-tools
