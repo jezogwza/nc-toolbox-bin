@@ -7,14 +7,6 @@ import (
 	"k8s.io/client-go/tools/clientcmd"
 )
 
-const (
-	StorageServiceName = "strgmgmt"
-	StorageNamespace   = "nc-system"
-	StorageSecretKey   = "default"
-)
-
-const KUBECONFIG string = "c:\\Users\\ropacheco\\.kube\\config"
-
 //______________________________________________________//
 
 func NewStorageClient() (*PureArray, error) {

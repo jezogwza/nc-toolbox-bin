@@ -483,16 +483,6 @@ func (pa *PureArray) ChangeUserPassword(userName string, password string, newPas
 	return pa.patchLocalUser(userName, password, newPassword)
 }
 
-// Does stringArray contain entry = str
-func contains(stringArray []string, str string) bool {
-	for _, value := range stringArray {
-		if value == str {
-			return true
-		}
-	}
-	return false
-}
-
 func generateRandomString(length int) string {
 	const pwLen = 12
 	var randomString string
