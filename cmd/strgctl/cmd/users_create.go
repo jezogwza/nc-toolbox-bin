@@ -10,8 +10,8 @@ import (
 )
 
 const (
-	FILE 		= "file"
-	KEYVAULT 	= "keyvault"
+	FILE     = "file"
+	KEYVAULT = "keyvault"
 )
 
 // usersCmd represents the users command
@@ -30,7 +30,7 @@ var userCreateCmd = &cobra.Command{
 		fmt.Println("users create called")
 		fileName, _ := cmd.Flags().GetString(FILE)
 		keyVault, _ := cmd.Flags().GetString(KEYVAULT)
-		var err := create(fileName, keyVault)
+		err := create(fileName, keyVault)
 		if err != nil {
 			fmt.Println("Error creating users", err)
 		}
@@ -47,12 +47,39 @@ func init() {
 /*
 Given a file with a list of users and their roles, the command reconciles the list against
 */
-func create(fileName string, keyVault string) (error) {
+func create(fileName string, keyVault string) error {
 	/** Load the list of users from the file */
 	var um UserMap
 	um.init()
-	var err = um.LoadUsers(fileName)
+	err := um.LoadUsers(fileName)
 	if err != nil {
 		return err
 	}
+
+	storageClient, err := NewStorageClient()
+	if err != nil {
+		return err
+	}
+
+	storageClient.CreateUsers(um)
+
+	/*
+		I should have users with passwords , that have not been
+		delivered to keyvauts yet?
+		 pureadmin setattr --password requires oldpassword
+
+	*/
+
+	/** Need to get the Storage Appliance client
+
+	- Get Storage Appliance Client
+	- CreateUers (Get UM as an input):
+		Should be a wrapper
+		Smart to know if user exists and only change the password in that case
+		Should be able to create a user and set the password
+	*/
+
+	/* Once this is complete then
+	um.StoreUsers(keyVault)
+	*/
 }

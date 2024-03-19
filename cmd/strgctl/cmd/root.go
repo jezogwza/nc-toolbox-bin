@@ -4,7 +4,6 @@ Copyright © 2024 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
-	"fmt"
 	"os"
 
 	"github.com/spf13/cobra"
@@ -46,22 +45,4 @@ func init() {
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-	cobra.OnInitialize(initConfig)
-}
-
-func initConfig() {
-	configFile = ".cobra-cli-samples.yml"
-	viper.SetConfigType("yaml")
-	viper.SetConfigFile(configFile)
-
-	viper.AutomaticEnv()
-	viper.SetEnvPrefix("COBRACLISAMPLES")
-	helper.HandleError(viper.BindEnv("API_KEY"))
-	helper.HandleError(viper.BindEnv("API_SECRET"))
-	helper.HandleError(viper.BindEnv("USERNAME"))
-	helper.HandleError(viper.BindEnv("PASSWORD"))
-
-	if err := viper.ReadInConfig(); err == nil {
-		fmt.Println("Using configuration file: ", viper.ConfigFileUsed())
-	}
 }

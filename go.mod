@@ -1,8 +1,10 @@
-module nc-toolbox-bin
+module github.com/jezogwza/nc-toolbox-bin
 
 go 1.22
 
 toolchain go1.22.0
+
+
 
 require (
 	dev.azure.com/msazuredev/AzureForOperatorsIndustry/_git/nc-1p-core.git/services/credentialmanager/sdk v0.0.0-20240313202232-1177937ac3a0
@@ -71,4 +73,7 @@ require (
 	sigs.k8s.io/json v0.0.0-20221116044647-bc3834ca7abd // indirect
 	sigs.k8s.io/structured-merge-diff/v4 v4.4.1 // indirect
 	sigs.k8s.io/yaml v1.3.0 // indirect
+	github.com/inconshreveable/mousetrap v1.1.0 // indirect
+	github.com/spf13/cobra v1.8.0 // indirect
+	github.com/spf13/pflag v1.0.5 // indirect
 )

@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"k8s.io/client-go/clientcmd"
-	"k8s.io/client-go/rest"
 )
 
 const (
@@ -13,9 +12,11 @@ const (
 	StorageSecretKey   = "default"
 )
 
+const KUBECONFIG string = "/home/rodolfo/.kube/config"
+
 //______________________________________________________//
 
-func NewStorageClient() (PureArray, error) {
+func NewStorageClient() (*PureArray, error) {
 	// Get the Kubeconfig
 	//
 	kubeconfigPath := KUBECONFIG // Set your kubeconfig path
@@ -27,7 +28,7 @@ func NewStorageClient() (PureArray, error) {
 		return nil, err
 	}
 
-	kClient := newKubernetesClient(config * rest.Config)
+	kClient := newKubernetesClient(config)
 	endpointIP, err := kClient.GetServiceClusterIp(StorageServiceName, StorageNamespace)
 	if err != nil {
 		return nil, err
@@ -47,7 +48,7 @@ func NewStorageClient() (PureArray, error) {
 		return nil, err
 	}
 	logger
-	purearray, err = NewPureArrayWithCredentials(endpointIP, username, password, logger)
+	purearray, err := NewPureArrayWithCredentials(endpointIP, username, password, logger)
 	if err != nil {
 		return nil, err
 	}
