@@ -3,7 +3,8 @@ package appliance
 import (
 	"fmt"
 
-	"k8s.io/client-go/clientcmd"
+	k8sclient "github.com/jezogwza/nc-toolbox-bin/pkg/k8sclient"
+	"k8s.io/client-go/tools/clientcmd"
 )
 
 const (
@@ -12,7 +13,7 @@ const (
 	StorageSecretKey   = "default"
 )
 
-const KUBECONFIG string = "/home/rodolfo/.kube/config"
+const KUBECONFIG string = "c:\\Users\\ropacheco\\.kube\\config"
 
 //______________________________________________________//
 
@@ -28,7 +29,7 @@ func NewStorageClient() (*PureArray, error) {
 		return nil, err
 	}
 
-	kClient := newKubernetesClient(config)
+	kClient := k8sclient.NewKubernetesClient(config)
 	endpointIP, err := kClient.GetServiceClusterIp(StorageServiceName, StorageNamespace)
 	if err != nil {
 		return nil, err
@@ -47,8 +48,8 @@ func NewStorageClient() (*PureArray, error) {
 	if err != nil {
 		return nil, err
 	}
-	logger
-	purearray, err := NewPureArrayWithCredentials(endpointIP, username, password, logger)
+
+	purearray, err := NewPureArrayWithCredentials(endpointIP, username, password, kClient.GetLogger())
 	if err != nil {
 		return nil, err
 	}

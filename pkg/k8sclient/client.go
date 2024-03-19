@@ -26,7 +26,7 @@ type KubernetesClient struct {
 	logger   logr.Logger
 }
 
-func newKubernetesClient(config *rest.Config) *KubernetesClient {
+func NewKubernetesClient(config *rest.Config) *KubernetesClient {
 	client := kubernetes.NewForConfigOrDie(config)
 	dynamicClient := dynamic.NewForConfigOrDie(config)
 	// Create a logger using slogr
@@ -40,6 +40,9 @@ func newKubernetesClient(config *rest.Config) *KubernetesClient {
 		kdClient: dynamicClient,
 		logger:   log,
 	}
+}
+func (k *KubernetesClient) GetLogger() logr.Logger {
+	return k.logger
 }
 
 func (k *KubernetesClient) GetSecretValue(secretName string, namespace string, secretKey string) (string, error) {
@@ -55,7 +58,7 @@ func (k *KubernetesClient) GetSecretValue(secretName string, namespace string, s
 			return string(value), nil
 		}
 	}
-	return "", fmt.Errorf("Secret %s does not contain key %s", secretName, secretKey)
+	return "", fmt.Errorf("secret %s does not contain key %s", secretName, secretKey)
 }
 
 func (k *KubernetesClient) GetServiceClusterIp(serviceName string, namespace string) (string, error) {

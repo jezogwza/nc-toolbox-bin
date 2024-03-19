@@ -9,7 +9,7 @@ import (
 	"k8s.io/client-go/tools/clientcmd"
 )
 
-const KUBECONFIG string = "/home/rodolfo/.kube/config"
+const KUBECONFIG string = "c:\\Users\\ropacheco\\.kube\\config"
 
 func TestLoadConfig(t *testing.T) {
 
@@ -21,7 +21,7 @@ func TestLoadConfig(t *testing.T) {
 		fmt.Printf("Error loading kubeconfig: %v\n", err)
 		os.Exit(1)
 	}
-	KubernetesClient := newKubernetesClient(config)
+	KubernetesClient := NewKubernetesClient(config)
 	assert.True(t, KubernetesClient != nil, "Have a k8s client")
 }
 
@@ -35,7 +35,7 @@ func TestGetSecretValue(t *testing.T) {
 		fmt.Printf("Error loading kubeconfig: %v\n", err)
 		os.Exit(1)
 	}
-	KubernetesClient := newKubernetesClient(config)
+	KubernetesClient := NewKubernetesClient(config)
 	secretValue, err := KubernetesClient.GetSecretValue("b37m25purestor1-v2mmktdbb5", "nc-system", "default")
 	fmt.Printf(" retrieving secret value: %v\n", secretValue)
 	if err != nil {
@@ -54,7 +54,7 @@ func TestGetServiceClusterIp(t *testing.T) {
 		fmt.Printf("Error loading kubeconfig: %v\n", err)
 		os.Exit(1)
 	}
-	KubernetesClient := newKubernetesClient(config)
+	KubernetesClient := NewKubernetesClient(config)
 	serviceValue, err := KubernetesClient.GetServiceClusterIp("strgmgmt", "nc-system")
 	fmt.Printf(" retrieving service: %v\n", serviceValue)
 	if err != nil {
@@ -72,7 +72,7 @@ func TestGetStorageApplianceName(t *testing.T) {
 		fmt.Printf("Error loading kubeconfig: %v\n", err)
 		os.Exit(1)
 	}
-	KubernetesClient := newKubernetesClient(config)
+	KubernetesClient := NewKubernetesClient(config)
 
 	saname, err := KubernetesClient.GetStorageApplianceName("nc-system")
 	fmt.Printf(" retrieving saname: %v\n", saname)
@@ -91,7 +91,7 @@ func TestGetStorageUserInfo(t *testing.T) {
 		fmt.Printf("Error loading kubeconfig: %v\n", err)
 		os.Exit(1)
 	}
-	KubernetesClient := newKubernetesClient(config)
+	KubernetesClient := NewKubernetesClient(config)
 	username, resourcename, err := KubernetesClient.GetStorageUserInfo("b37m25purestor1-v2mmktdbb5", "nc-system")
 	fmt.Printf(" retrieving resourcename: %v\n", resourcename)
 	fmt.Printf(" retrieving username: %v\n", username)
