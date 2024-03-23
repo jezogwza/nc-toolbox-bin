@@ -23,13 +23,15 @@ type Appliance interface {
 
 	// ChangeUserPassword Change the password of a user. The newPassword cannot be empty.
 	ChangeUserPassword(userName string, password string, newPassword string) error
+
+	InitClient() error
 }
 
 type StorageClient struct {
 	purearray *PureArray
 }
 
-func (sc *StorageClient) InitStorageClient() error {
+func (sc *StorageClient) InitClient() error {
 	// Get the Kubeconfig
 	//
 	// @TODO This need to get the KUBECONFIG from Environment

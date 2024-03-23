@@ -10,7 +10,7 @@ import (
 func TestNewStorageClient(t *testing.T) {
 	var storageClient *StorageClient = &StorageClient{}
 
-	err := storageClient.InitStorageClient()
+	err := storageClient.InitClient()
 	if err != nil {
 		fmt.Printf("Error creating storage client: %v\n", err)
 	}
