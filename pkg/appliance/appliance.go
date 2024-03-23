@@ -29,7 +29,7 @@ type StorageClient struct {
 	purearray *PureArray
 }
 
-func NewStorageClient() (*StorageClient, error) {
+func (sc *StorageClient) InitStorageClient() error {
 	// Get the Kubeconfig
 	//
 	// @TODO This need to get the KUBECONFIG from Environment
@@ -40,35 +40,36 @@ func NewStorageClient() (*StorageClient, error) {
 	config, err := clientcmd.BuildConfigFromFlags("", kubeconfigPath)
 	if err != nil {
 		fmt.Printf("Error loading kubeconfig: %v\n", err)
-		return nil, err
+		return err
 	}
 
 	kClient := k8sclient.NewKubernetesClient(config)
 	endpointIP, err := kClient.GetServiceClusterIp(StorageServiceName, StorageNamespace)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	strorageApplianceName, err := kClient.GetStorageApplianceName(StorageNamespace)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	username, secretName, err := kClient.GetStorageUserInfo(strorageApplianceName, StorageNamespace)
 	if err != nil {
-		return nil, err
+		return err
 	}
 	password, err := kClient.GetSecretValue(secretName, StorageNamespace, "default")
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	purearray, err := NewPureArrayWithCredentials(endpointIP, username, password, kClient.GetLogger())
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	return &StorageClient{purearray: purearray}, nil
+	sc.purearray = purearray
+	return nil
 }
 
 // CreateUsers creates local users on the array.
