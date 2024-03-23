@@ -75,7 +75,7 @@ func (sc *StorageClient) InitClient() error {
 }
 
 // CreateUsers creates local users on the array.
-func (sc *StorageClient) CreateUsers(um *umap.UserMap) (*umap.UserMap, error) {
+func (sc *StorageClient) CreateUsers(um umap.UserMap) (umap.UserMap, error) {
 	uList, err := sc.purearray.CreateUsers(um.GetUsers())
 	if err != nil {
 		return nil, err
