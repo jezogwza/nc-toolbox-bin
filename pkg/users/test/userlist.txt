@@ -1,0 +1,3 @@
+usera,storage_admin
+userb,read_only
+userc,array_admin
