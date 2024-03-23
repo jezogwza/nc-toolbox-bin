@@ -10,7 +10,6 @@ import (
 func TestUsers(t *testing.T) {
 
 	var um UserMap
-	um.Init()
 	err := um.LoadUsers("test/userlist.txt")
 	if err != nil {
 		fmt.Printf("Error is %s\n", err.Error())
@@ -25,10 +24,9 @@ func TestUsers(t *testing.T) {
 func TestInvalidUsers(t *testing.T) {
 
 	var um UserMap
-	um.Init()
 	err := um.LoadUsers("test/baduserlist.txt")
 	if err != nil {
-		//fmt.Printf("Error is %s\n", err.Error())
+		fmt.Printf("Error is %s\n", err.Error())
 		assert.True(t, err != nil && err.Error() == "Invalid user admin. Used by a system account", "Should have failed to load the bad user list")
 	}
 }
@@ -36,7 +34,6 @@ func TestInvalidUsers(t *testing.T) {
 func TestBadUsersRole(t *testing.T) {
 
 	var um UserMap
-	um.Init()
 	err := um.LoadUsers("test/baduserrole.txt")
 	if err != nil {
 		//fmt.Printf("Error is %s\n", err.Error())

@@ -51,8 +51,7 @@ Given a file with a list of users and their roles, the command reconciles the li
 */
 func create(fileName string, keyVault string) error {
 	/** Load the list of users from the file */
-	var um user.UserMap
-	um.Init()
+	var um *user.UserMap
 	err := um.LoadUsers(fileName)
 	if err != nil {
 		return err
