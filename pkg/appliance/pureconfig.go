@@ -14,6 +14,7 @@ import (
 	"github.com/antihax/optional"
 	pureclient "github.com/cwedgwood/pureclient/client"
 	"github.com/go-logr/logr"
+	"github.com/jezogwza/nc-toolbox-bin/pkg/users"
 	util "github.com/jezogwza/nc-toolbox-bin/pkg/utils"
 )
 
@@ -208,7 +209,7 @@ func (pa *PureArray) DeleteUser(username string) error {
 }
 
 // GetUsers gets a list of all the users on the pure array.
-func (pa *PureArray) GetUsers() ([]User, error) {
+func (pa *PureArray) GetUsers() ([]users.User, error) {
 	// TODO: Limit how many to get at once, there should only be three.
 	userList, httpResp, err := pa.apiClient.AdministratorsApi.Api28AdminsGet(context.Background(), nil)
 	if err != nil {
@@ -241,12 +242,12 @@ func (pa *PureArray) GetUsers() ([]User, error) {
 		pa.logger.Info("No Users found in Pure")
 		return nil, nil
 	}
-	var pureUser User
-	var pureUserList []User
+	var pureUser users.User
+	var pureUserList []users.User
 	for _, user := range userList.Items {
 		// if apiToken is created an earlier call, Pure would not let you retrieve it unless
 		// we login to Pure with the same user's credentials or API token
-		pureUser = User{Name: user.Name, Password: user.Password, Role: user.Role}
+		pureUser = users.User{Name: user.Name, Password: user.Password, Role: user.Role}
 		pureUserList = append(pureUserList, pureUser)
 	}
 
@@ -297,7 +298,7 @@ func (pa *PureArray) getUser(username string) (*pureclient.Admin, error) {
 	return &userList.Items[0], nil
 }
 
-func (pa *PureArray) createLocalUser(user *User) error {
+func (pa *PureArray) createLocalUser(user *users.User) error {
 	userFetched, err := pa.getUser(user.Name)
 	if err != nil {
 		return err
@@ -431,14 +432,14 @@ func (pa *PureArray) patchLocalUser(userName string, password string, newPasswor
 // It is advised to create one user at a time unless client consuming this API
 // keeps track of successful user creation of each user input
 // API token for an user once created will not be recreated or retrieved.
-func (pa *PureArray) CreateUsers(users []User) ([]User, error) {
+func (pa *PureArray) CreateUsers(ulist []users.User) ([]users.User, error) {
 	// This should be the first call from controller during the reconcile
 	// Not expected to be called more than once
-	usersCreated := []User{}
+	usersCreated := []users.User{}
 
 	var err error
-	for i := 0; i < len(users); i++ {
-		user := users[i]
+	for i := 0; i < len(ulist); i++ {
+		user := ulist[i]
 		pa.logger.Info("Creating", "user", user.Name, "role", user.Role)
 
 		err = pa.createLocalUser(&user)
@@ -451,13 +452,22 @@ func (pa *PureArray) CreateUsers(users []User) ([]User, error) {
 			return usersCreated, fmt.Errorf("error creating user token")
 		}
 
-		var createdUser User
+		var createdUser users.User
 		// if apiToken is created an earlier call, Pure would not let you retrieve it unless
 		// we login to Pure with the same user's credentials or API token
 		if len(apiToken) > 0 {
-			createdUser = User{Name: user.Name, Password: user.Password, Role: user.Role, ApiToken: apiToken}
+			createdUser = users.User{
+				Name:     user.Name,
+				Password: user.Password,
+				Role:     user.Role,
+				ApiToken: apiToken,
+			}
 		} else {
-			createdUser = User{Name: user.Name, Password: user.Password, Role: user.Role}
+			createdUser = users.User{
+				Name:     user.Name,
+				Password: user.Password,
+				Role:     user.Role,
+			}
 		}
 		usersCreated = append(usersCreated, createdUser)
 	}

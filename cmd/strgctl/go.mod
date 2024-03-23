@@ -3,7 +3,7 @@ module strgctl
 go 1.22
 
 require (
-	github.com/jezogwza/nc-toolbox-bin v0.0.0-20240319210149-710dcbe5a3d4
+	github.com/jezogwza/nc-toolbox-bin v0.0.0-20240323191140-7bc8bdb6233d
 	github.com/spf13/cobra v1.8.0
 )
 

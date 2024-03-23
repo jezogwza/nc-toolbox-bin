@@ -51,7 +51,7 @@ Given a file with a list of users and their roles, the command reconciles the li
 */
 func create(fileName string, keyVault string) error {
 	/** Load the list of users from the file */
-	var um *user.UserMap
+	var um user.UserMap
 	err := um.LoadUsers(fileName)
 	if err != nil {
 		return err
@@ -62,7 +62,7 @@ func create(fileName string, keyVault string) error {
 		return err
 	}
 
-	storageClient.CreateUsers(um)
+	//storageClient.CreateUsers(um)
 
 	/*
 		I should have users with passwords , that have not been

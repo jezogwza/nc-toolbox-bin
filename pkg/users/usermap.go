@@ -24,14 +24,12 @@ Retype password:
 
 */
 
-type StorageRole string
-
 /* This stuff is in the controller so schoose to copy instead of improting */
 const (
-	StorageApplianceUserRoleArrayAdmin   StorageRole = "array_admin"
-	StorageApplianceUserRoleStorageAdmin StorageRole = "storage_admin"
-	StorageApplianceUserRoleReadOnly     StorageRole = "readonly"
-	StorageApplianceUserRoleOpsAdmin     StorageRole = "ops_admin"
+	StorageApplianceUserRoleArrayAdmin   string = "array_admin"
+	StorageApplianceUserRoleStorageAdmin string = "storage_admin"
+	StorageApplianceUserRoleReadOnly     string = "readonly"
+	StorageApplianceUserRoleOpsAdmin     string = "ops_admin"
 )
 
 var StorageApplianceUserList = []string{"admin", "lma", "pureuser", "storage"}
@@ -44,25 +42,15 @@ type User struct {
 
 	// Allowed values: readonly, storage_admin, and array_admin.
 	// ops_admin not supported yet
-	Role StorageRole
+	Role string
 	// Provided by the Pure client.
 	ApiToken string
 }
 
-/* Change this to use USer in storagearray for consistently */
 type CtlUser struct {
 	user           User
 	secretLocation string
 }
-
-/*
-type User struct {
-	name           string
-	password       string
-	role           StorageRole
-	secretLocation string
-}
-*/
 
 type UserMap map[string]CtlUser
 
@@ -92,9 +80,10 @@ func (um *UserMap) LoadUsers(filename string) error {
 		u := CtlUser{
 			user: User{
 				Name:     n[0],
-				Role:     StorageRole(n[1]),
+				Role:     (n[1]),
 				Password: um.generatePasswd(),
 			},
+			secretLocation: "",
 		}
 
 		(*um)[n[0]] = u
@@ -119,10 +108,10 @@ func (um *UserMap) validateUser(n []string) error {
 		return fmt.Errorf("Invalid user %s. Used by a system account", n[0])
 	}
 
-	if StorageRole(n[1]) != StorageApplianceUserRoleArrayAdmin &&
-		StorageRole(n[1]) != StorageApplianceUserRoleStorageAdmin &&
-		StorageRole(n[1]) != StorageApplianceUserRoleReadOnly &&
-		StorageRole(n[1]) != StorageApplianceUserRoleOpsAdmin {
+	if (n[1]) != StorageApplianceUserRoleArrayAdmin &&
+		(n[1]) != StorageApplianceUserRoleStorageAdmin &&
+		(n[1]) != StorageApplianceUserRoleReadOnly &&
+		(n[1]) != StorageApplianceUserRoleOpsAdmin {
 		return fmt.Errorf("Invalid role for user %s", n[0])
 	}
 
@@ -135,7 +124,28 @@ Keyvault.
 
 *
 */
-func (um *UserMap) storeUsers(keyVault string) error {
+func (um *UserMap) StoreUsers(keyVault string) error {
+	return nil
+}
+
+/*
+*
+
+*
+ */
+func (um *UserMap) GetUsers() []User {
+	ulist := make([]User, len(*um))
+	for key, _ := range *um {
+		ulist = append(ulist, (*um)[key].user)
+	}
+	return ulist
+}
+
+func (um *UserMap) PrepareUsers(ulist []User) error {
+	for key, _ := range *um {
+		ctluser := (*um)[key]
+		ctluser.secretLocation = "@TODO GENERATE THE KEYVAUKT ENTRY NAME FOR THIS USER"
+	}
 	return nil
 }
 

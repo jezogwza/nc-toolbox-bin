@@ -106,6 +106,8 @@ github.com/inconshreveable/mousetrap v1.1.0 h1:wN+x4NVGpMsO7ErUn/mUI3vEoE6Jt13X2
 github.com/inconshreveable/mousetrap v1.1.0/go.mod h1:vpF70FUmC8bwa3OWnCshd2FqLfsEA9PFc4w1p2J65bw=
 github.com/jezogwza/nc-toolbox-bin v0.0.0-20240319210149-710dcbe5a3d4 h1:LcNP+5HpNjoiLtySlAR1P/QUaVsG8XwxIx0HZMMV8mM=
 github.com/jezogwza/nc-toolbox-bin v0.0.0-20240319210149-710dcbe5a3d4/go.mod h1:6ekofdWDxs7oBREMxuBeCtGa5ZrdgXoFQpgE1nZdvME=
+github.com/jezogwza/nc-toolbox-bin v0.0.0-20240323191140-7bc8bdb6233d h1:R5AqbGsmpIlxBmx64CiAGVzW/7K4LKcf1lmXab8tDZc=
+github.com/jezogwza/nc-toolbox-bin v0.0.0-20240323191140-7bc8bdb6233d/go.mod h1:6ekofdWDxs7oBREMxuBeCtGa5ZrdgXoFQpgE1nZdvME=
 github.com/josharian/intern v1.0.0 h1:vlS4z54oSdjm0bgjRigI+G1HpF+tI+9rE5LLzOg8HmY=
 github.com/josharian/intern v1.0.0/go.mod h1:5DoeVV0s6jJacbCEi61lwdGj/aVlrQvzHFFd8Hwg//Y=
 github.com/json-iterator/go v1.1.12 h1:PV8peI4a0ysnczrg+LtxykD8LfKY9ML6u2jnxaEnrnM=
