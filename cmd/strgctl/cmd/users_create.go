@@ -6,6 +6,8 @@ package cmd
 import (
 	"fmt"
 
+	appliance "github.com/jezogwza/nc-toolbox-bin/pkg/appliance"
+	user "github.com/jezogwza/nc-toolbox-bin/pkg/users"
 	"github.com/spf13/cobra"
 )
 
@@ -49,14 +51,14 @@ Given a file with a list of users and their roles, the command reconciles the li
 */
 func create(fileName string, keyVault string) error {
 	/** Load the list of users from the file */
-	var um UserMap
-	um.init()
+	var um user.UserMap
+	um.Init()
 	err := um.LoadUsers(fileName)
 	if err != nil {
 		return err
 	}
 
-	storageClient, err := NewStorageClient()
+	storageClient, err := appliance.NewStorageClient()
 	if err != nil {
 		return err
 	}

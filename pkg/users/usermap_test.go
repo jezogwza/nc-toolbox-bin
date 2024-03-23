@@ -1,6 +1,7 @@
 package users
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -9,8 +10,11 @@ import (
 func TestUsers(t *testing.T) {
 
 	var um UserMap
-	um.init()
-	um.LoadUsers("userlist.txt")
+	um.Init()
+	err := um.LoadUsers("test/userlist.txt")
+	if err != nil {
+		fmt.Printf("Error is %s\n", err.Error())
+	}
 	//fmt.Println("Loaded users", um)
 	for key, _ := range um {
 		assert.True(t, um[key].user.Name == key, "Should have be the same value as the key")
@@ -21,8 +25,8 @@ func TestUsers(t *testing.T) {
 func TestInvalidUsers(t *testing.T) {
 
 	var um UserMap
-	um.init()
-	err := um.LoadUsers("baduserlist.txt")
+	um.Init()
+	err := um.LoadUsers("test/baduserlist.txt")
 	if err != nil {
 		//fmt.Printf("Error is %s\n", err.Error())
 		assert.True(t, err != nil && err.Error() == "Invalid user admin. Used by a system account", "Should have failed to load the bad user list")
@@ -32,8 +36,8 @@ func TestInvalidUsers(t *testing.T) {
 func TestBadUsersRole(t *testing.T) {
 
 	var um UserMap
-	um.init()
-	err := um.LoadUsers("baduserrole.txt")
+	um.Init()
+	err := um.LoadUsers("test/baduserrole.txt")
 	if err != nil {
 		//fmt.Printf("Error is %s\n", err.Error())
 		assert.True(t, err != nil && err.Error() == "Invalid role for user usera", "Should have failed to load the bad user role list")

@@ -67,7 +67,7 @@ type User struct {
 type UserMap map[string]CtlUser
 
 // Read the user name list from a file and generate a password for each user
-func (um *UserMap) init() {
+func (um *UserMap) Init() {
 	*um = make(map[string]CtlUser)
 }
 
@@ -79,7 +79,7 @@ func (um *UserMap) LoadUsers(filename string) error {
 	}
 	defer file.Close()
 
-	um.init()
+	um.Init()
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 
@@ -115,7 +115,7 @@ Enusre that the roles associated with the users are valid roles
 func (um *UserMap) validateUser(n []string) error {
 	fmt.Printf("Validating user %s with role %s\n", n[0], n[1])
 	if slices.Contains(StorageApplianceUserList, n[0]) {
-		return fmt.Errorf("Invalid user %s. Used by a system account", n[0])
+		return fmt.Errorf("invalid user %s. Used by a system account", n[0])
 	}
 
 	if StorageRole(n[1]) != StorageApplianceUserRoleArrayAdmin &&
