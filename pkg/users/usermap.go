@@ -133,7 +133,7 @@ func (um *UserMap) StoreUsers(keyVault string) error {
 
 *
  */
-func (um *UserMap) GetUsers() []User {
+func (um *UserMap) ListUsers() []User {
 	ulist := make([]User, len(*um))
 	for key, _ := range *um {
 		ulist = append(ulist, (*um)[key].user)

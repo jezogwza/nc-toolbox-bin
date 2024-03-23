@@ -17,7 +17,7 @@ type Appliance interface {
 	// One can retrieve his own API token, not others even if it has got admin role
 	CreateUsers(umap.UserMap) (umap.UserMap, error)
 	// GetUsers gets a list of all the current users fro mthe stroage array.
-	GetUsers() (umap.UserMap, error)
+	GetUsers(umap.UserMap) error
 	// DeleteUser deletes the given user.  Deleting a user that doesn't exist returns success
 	DeleteUser(username string) error
 
@@ -76,7 +76,7 @@ func (sc *StorageClient) InitClient() error {
 
 // CreateUsers creates local users on the array.
 func (sc *StorageClient) CreateUsers(um umap.UserMap) (umap.UserMap, error) {
-	uList, err := sc.purearray.CreateUsers(um.GetUsers())
+	uList, err := sc.purearray.CreateUsers(um.ListUsers())
 	if err != nil {
 		return nil, err
 	}
@@ -85,9 +85,14 @@ func (sc *StorageClient) CreateUsers(um umap.UserMap) (umap.UserMap, error) {
 }
 
 // GetUsers gets a list of all the current users fro mthe stroage array.
-func (sc *StorageClient) GetUsers() ([]umap.User, error) {
+func (sc *StorageClient) GetUsersum(um umap.UserMap) error {
 	// NEed to maap from the list of user to the UserMap to keep state and the relationship to keyvault
-	return sc.purearray.GetUsers()
+	uList, err := sc.purearray.GetUsers()
+	if err != nil {
+		return err
+	}
+	um.PrepareUsers(uList)
+	return nil
 }
 
 // DeleteUser deletes the given user.  Deleting a user that doesn't exist returns success
