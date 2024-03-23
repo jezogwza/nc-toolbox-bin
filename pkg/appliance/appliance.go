@@ -29,9 +29,11 @@ type StorageClient struct {
 	purearray *PureArray
 }
 
-func NewStorageClient() (*PureArray, error) {
+func NewStorageClient() (*StorageClient, error) {
 	// Get the Kubeconfig
 	//
+	// @TODO This need to get the KUBECONFIG from Environment
+	// Should be hidden in teh k8sclient
 	kubeconfigPath := KUBECONFIG // Set your kubeconfig path
 
 	// Load kubeconfig from file
@@ -66,7 +68,7 @@ func NewStorageClient() (*PureArray, error) {
 		return nil, err
 	}
 
-	return purearray, nil
+	return &StorageClient{purearray: purearray}, nil
 }
 
 // CreateUsers creates local users on the array.
