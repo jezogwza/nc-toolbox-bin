@@ -6,14 +6,9 @@ package cmd
 import (
 	"fmt"
 
-	appliance "github.com/jezogwza/nc-toolbox-bin/pkg/appliance"
+	storage "github.com/jezogwza/nc-toolbox-bin/pkg/appliance"
 	user "github.com/jezogwza/nc-toolbox-bin/pkg/users"
 	"github.com/spf13/cobra"
-)
-
-const (
-	FILE     = "file"
-	KEYVAULT = "keyvault"
 )
 
 // usersCmd represents the users command
@@ -49,20 +44,27 @@ func init() {
 /*
 Given a file with a list of users and their roles, the command reconciles the list against
 */
-func create(fileName string, keyVault string) error {
+func delete(fileName string, keyVault string) error {
 	/** Load the list of users from the file */
+	fmt.Println("Loading Users")
 	var um user.UserMap
 	err := um.LoadUsers(fileName)
 	if err != nil {
 		return err
 	}
 
-	storageClient, err := appliance.NewStorageClient()
+	fmt.Println("Initializing Storage Client ")
+	var sclient *storage.StorageClient = &storage.StorageClient{}
+	err = sclient.InitClient()
 	if err != nil {
 		return err
 	}
 
-	//storageClient.CreateUsers(um)
+	fmt.Println("Deleting Users")
+	err = sclient.DeleteUser(um)
+	if err != nil {
+		return err
+	}
 
 	/*
 		I should have users with passwords , that have not been
@@ -83,4 +85,5 @@ func create(fileName string, keyVault string) error {
 	/* Once this is complete then
 	um.StoreUsers(keyVault)
 	*/
+	return nil
 }

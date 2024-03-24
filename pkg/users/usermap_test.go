@@ -16,9 +16,9 @@ func TestUsers(t *testing.T) {
 	}
 	//fmt.Println("Loaded users", um)
 	for key, _ := range um {
-		assert.True(t, um[key].user.Name == key, "Should have be the same value as the key")
-		assert.True(t, um[key].user.Password != "", "Should have a password value")
-		assert.True(t, um[key].user.Role != "", "Should have a role value")
+		assert.True(t, um[key].UserInfo.Name == key, "Should have be the same value as the key")
+		assert.True(t, um[key].UserInfo.Password != "", "Should have a password value")
+		assert.True(t, um[key].UserInfo.Role != "", "Should have a role value")
 	}
 }
 func TestInvalidUsers(t *testing.T) {

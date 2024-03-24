@@ -3,9 +3,9 @@ package appliance
 import (
 	"fmt"
 
+	labels "github.com/jezogwza/nc-toolbox-bin/pkg"
 	k8sclient "github.com/jezogwza/nc-toolbox-bin/pkg/k8sclient"
 	umap "github.com/jezogwza/nc-toolbox-bin/pkg/users"
-	"k8s.io/client-go/tools/clientcmd"
 )
 
 type Appliance interface {
@@ -18,6 +18,10 @@ type Appliance interface {
 	CreateUsers(umap.UserMap) (umap.UserMap, error)
 	// GetUsers gets a list of all the current users fro mthe stroage array.
 	GetUsers(umap.UserMap) error
+
+	// DeleteUsera deletes the users in a UserMap.  Deleting a user that doesn't exist returns success
+	DeleteUsers(umap.UserMap) error
+
 	// DeleteUser deletes the given user.  Deleting a user that doesn't exist returns success
 	DeleteUser(username string) error
 
@@ -33,34 +37,28 @@ type StorageClient struct {
 
 func (sc *StorageClient) InitClient() error {
 	// Get the Kubeconfig
-	//
-	// @TODO This need to get the KUBECONFIG from Environment
-	// Should be hidden in teh k8sclient
-	kubeconfigPath := KUBECONFIG // Set your kubeconfig path
-
-	// Load kubeconfig from file
-	config, err := clientcmd.BuildConfigFromFlags("", kubeconfigPath)
+	config, err := k8sclient.GetConfig() // Set your kubeconfig path
 	if err != nil {
 		fmt.Printf("Error loading kubeconfig: %v\n", err)
 		return err
 	}
 
 	kClient := k8sclient.NewKubernetesClient(config)
-	endpointIP, err := kClient.GetServiceClusterIp(StorageServiceName, StorageNamespace)
+	endpointIP, err := kClient.GetServiceClusterIp(labels.StorageServiceName, labels.StorageNamespace)
 	if err != nil {
 		return err
 	}
 
-	strorageApplianceName, err := kClient.GetStorageApplianceName(StorageNamespace)
+	strorageApplianceName, err := kClient.GetStorageApplianceName(labels.StorageNamespace)
 	if err != nil {
 		return err
 	}
 
-	username, secretName, err := kClient.GetStorageUserInfo(strorageApplianceName, StorageNamespace)
+	username, secretName, err := kClient.GetStorageUserInfo(strorageApplianceName, labels.StorageNamespace)
 	if err != nil {
 		return err
 	}
-	password, err := kClient.GetSecretValue(secretName, StorageNamespace, "default")
+	password, err := kClient.GetSecretValue(secretName, labels.StorageNamespace, "default")
 	if err != nil {
 		return err
 	}
@@ -81,6 +79,19 @@ func (sc *StorageClient) CreateUsers(um umap.UserMap) (umap.UserMap, error) {
 		return nil, err
 	}
 	um.PrepareUsers(uList)
+	return um, nil
+}
+
+func (sc *StorageClient) DeleteUsers(um umap.UserMap) (umap.UserMap, error) {
+	for key, _ := range um {
+		ctlUser := (um)[key]
+		err := sc.purearray.DeleteUser(ctlUser.UserInfo.Name)
+		if err != nil {
+			return nil, err
+		}
+		ctlUser.UserState = labels.UserStateDeleted
+	}
+
 	return um, nil
 }
 

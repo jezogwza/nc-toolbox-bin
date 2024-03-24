@@ -36,20 +36,16 @@ ifndef ENV
 	$(error ENV is undefined, please set it with e.g. make target ENV=<string>)
 endif
 
-##@@ Tools
-
-vercheck: build-vercheck validate-in ## Load and validate a version inventory input. Use IN=<filename>
-	$(PROJ_DIR)/tools/vercheck.sh $(IN)
 
 ##@@ Build - different build process for the repository
 
-build: build-vergen build-vercheck ## Build all binaries
+build: build-cmds  ## Build all binaries
 
-build-vergen: ## Build tools binaries required for generating version values
-	CGO_ENABLED=0 go build -ldflags="-extldflags=-static" -o $(PROJ_DIR)/bin/vergen cmd/vergen/main.go
+build-cmds: build-strgctl ## Build different command lines
 
-build-vercheck: ## Build tools binaries required for validating version values
-	CGO_ENABLED=0 go build -ldflags="-extldflags=-static" -o $(PROJ_DIR)/bin/vercheck cmd/vercheck/main.go
+build-strgctl: ## Build strgctl
+    cd $(PROJ_DIR)/cmd/strgctl &&
+	CGO_ENABLED=0 go build -ldflags="-extldflags=-static" -o $(PROJ_DIR)/bin
 
 ##@ Quality Assurance - Local Quality Assurance target for the repo.
 validate-go:  ## Validate the go code in this repo

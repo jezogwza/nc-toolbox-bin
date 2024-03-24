@@ -14,13 +14,11 @@ var configFile string
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "strgctl",
-	Short: "A brief description of your application",
-	Long: `A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "The Storage CTL is a command line utility that provides actions against a protected Nexus storae appliance.",
+	Long: `The Storage CTL is a command line utility that provides actions against a protected Nexus storae appliance.
+	Including :
+		users : Storage local users lifecycle
+		volume : volume information and state.`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	// Run: func(cmd *cobra.Command, args []string) { },

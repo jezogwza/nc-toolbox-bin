@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"dev.azure.com/msazuredev/AzureForOperatorsIndustry/_git/nc-1p-core.git/services/credentialmanager/sdk"
+	labels "github.com/jezogwza/nc-toolbox-bin/pkg"
 )
 
 /**
@@ -21,18 +22,9 @@ storage   local  storage_admin
 pureuser@b37int1a1pu01> pureadmin create ropacheco --role readonly
 Enter password:
 Retype password:
-
 */
 
 /* This stuff is in the controller so schoose to copy instead of improting */
-const (
-	StorageApplianceUserRoleArrayAdmin   string = "array_admin"
-	StorageApplianceUserRoleStorageAdmin string = "storage_admin"
-	StorageApplianceUserRoleReadOnly     string = "readonly"
-	StorageApplianceUserRoleOpsAdmin     string = "ops_admin"
-)
-
-var StorageApplianceUserList = []string{"admin", "lma", "pureuser", "storage"}
 
 type User struct {
 	Name string
@@ -48,8 +40,9 @@ type User struct {
 }
 
 type CtlUser struct {
-	user           User
-	secretLocation string
+	UserInfo       User
+	UserState      string
+	SecretLocation string
 }
 
 type UserMap map[string]CtlUser
@@ -78,12 +71,13 @@ func (um *UserMap) LoadUsers(filename string) error {
 			return err
 		}
 		u := CtlUser{
-			user: User{
+			UserInfo: User{
 				Name:     n[0],
 				Role:     (n[1]),
 				Password: um.generatePasswd(),
 			},
-			secretLocation: "",
+			UserState:      labels.UserStateIntended,
+			SecretLocation: "",
 		}
 
 		(*um)[n[0]] = u
@@ -104,14 +98,14 @@ Enusre that the roles associated with the users are valid roles
 */
 func (um *UserMap) validateUser(n []string) error {
 	fmt.Printf("Validating user %s with role %s\n", n[0], n[1])
-	if slices.Contains(StorageApplianceUserList, n[0]) {
+	if slices.Contains(labels.StorageApplianceUserList, n[0]) {
 		return fmt.Errorf("Invalid user %s. Used by a system account", n[0])
 	}
 
-	if (n[1]) != StorageApplianceUserRoleArrayAdmin &&
-		(n[1]) != StorageApplianceUserRoleStorageAdmin &&
-		(n[1]) != StorageApplianceUserRoleReadOnly &&
-		(n[1]) != StorageApplianceUserRoleOpsAdmin {
+	if (n[1]) != labels.StorageApplianceUserRoleArrayAdmin &&
+		(n[1]) != labels.StorageApplianceUserRoleStorageAdmin &&
+		(n[1]) != labels.StorageApplianceUserRoleReadOnly &&
+		(n[1]) != labels.StorageApplianceUserRoleOpsAdmin {
 		return fmt.Errorf("Invalid role for user %s", n[0])
 	}
 
@@ -129,22 +123,21 @@ func (um *UserMap) StoreUsers(keyVault string) error {
 }
 
 /*
-*
-
+* Walk through the Users
 *
  */
 func (um *UserMap) ListUsers() []User {
 	ulist := make([]User, len(*um))
-	for key, _ := range *um {
-		ulist = append(ulist, (*um)[key].user)
+	for key := range *um {
+		ulist = append(ulist, (*um)[key].UserInfo)
 	}
 	return ulist
 }
 
 func (um *UserMap) PrepareUsers(ulist []User) error {
-	for key, _ := range *um {
+	for key := range *um {
 		ctluser := (*um)[key]
-		ctluser.secretLocation = "@TODO GENERATE THE KEYVAUKT ENTRY NAME FOR THIS USER"
+		ctluser.SecretLocation = "@TODO GENERATE THE KEYVAUKT ENTRY NAME FOR THIS USER"
 	}
 	return nil
 }

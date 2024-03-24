@@ -6,24 +6,36 @@ import (
 
 	"github.com/go-logr/logr"
 	"github.com/go-logr/zapr"
+	labels "github.com/jezogwza/nc-toolbox-bin/pkg"
 	"go.uber.org/zap"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/dynamic"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
-)
-
-const (
-	StorageApplianceResourceName = "storageappliance"
-	StorageApplianceApiVersion   = "platform.afo-nc.microsoft.com/v1"
-	StorageApplianceGroup        = "storageappliances.platform.afo-nc.microsoft.com"
-	StorageApplianceNamespace    = "nc-system"
+	"k8s.io/client-go/tools/clientcmd"
 )
 
 type KubernetesClient struct {
 	kClient  kubernetes.Interface
 	kdClient dynamic.Interface
 	logger   logr.Logger
+}
+
+func getKubeConfig() string {
+	// TODO : This should be read from the environment
+	return labels.KUBECONFIG
+}
+
+func GetConfig() (*rest.Config, error) {
+	kubeconfigPath := getKubeConfig() // Set your kubeconfig path
+
+	// Load kubeconfig from file
+	config, err := clientcmd.BuildConfigFromFlags("", kubeconfigPath)
+	if err != nil {
+		fmt.Printf("Error loading kubeconfig: %v\n", err)
+		return nil, err
+	}
+	return config, nil
 }
 
 func NewKubernetesClient(config *rest.Config) *KubernetesClient {
