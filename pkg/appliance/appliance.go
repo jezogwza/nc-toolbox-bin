@@ -85,7 +85,7 @@ func (sc *StorageClient) CreateUsers(um umap.UserMap) (umap.UserMap, error) {
 }
 
 // GetUsers gets a list of all the current users fro mthe stroage array.
-func (sc *StorageClient) GetUsersum(um umap.UserMap) error {
+func (sc *StorageClient) GetUsers(um umap.UserMap) error {
 	// NEed to maap from the list of user to the UserMap to keep state and the relationship to keyvault
 	uList, err := sc.purearray.GetUsers()
 	if err != nil {
