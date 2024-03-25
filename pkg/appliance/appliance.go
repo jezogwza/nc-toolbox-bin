@@ -39,7 +39,7 @@ func (sc *StorageClient) InitClient() error {
 	// Get the Kubeconfig
 	config, err := k8sclient.GetConfig() // Set your kubeconfig path
 	if err != nil {
-		fmt.Printf("Error loading kubeconfig: %v\n", err)
+		fmt.Printf("Error retrieving  kubeconfig: %v\n", err)
 		return err
 	}
 
@@ -83,7 +83,7 @@ func (sc *StorageClient) CreateUsers(um umap.UserMap) (umap.UserMap, error) {
 }
 
 func (sc *StorageClient) DeleteUsers(um umap.UserMap) (umap.UserMap, error) {
-	for key, _ := range um {
+	for key := range um {
 		ctlUser := (um)[key]
 		err := sc.purearray.DeleteUser(ctlUser.UserInfo.Name)
 		if err != nil {

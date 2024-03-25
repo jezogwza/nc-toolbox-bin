@@ -12,6 +12,7 @@ const (
 const (
 	KUBECONFIG          string = "~/.kube/config"
 	KUBECONFIG_ENV_NAME        = "KUBECONFIG"
+	SUDOERS_FILE               = "/etc/sudoers"
 )
 
 const (

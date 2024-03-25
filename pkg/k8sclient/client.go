@@ -25,6 +25,7 @@ type KubernetesClient struct {
 func getKubeConfig() string {
 	// TODO : This should be read from the environment
 	kubeConfigFile := os.Getenv(labels.KUBECONFIG_ENV_NAME)
+	fmt.Printf("Reading from ENV %v  kubeConfigFile: %v\n", labels.KUBECONFIG_ENV_NAME, kubeConfigFile)
 	return kubeConfigFile
 }
 
@@ -34,7 +35,7 @@ func GetConfig() (*rest.Config, error) {
 	// Load kubeconfig from file
 	config, err := clientcmd.BuildConfigFromFlags("", kubeconfigPath)
 	if err != nil {
-		fmt.Printf("Error loading kubeconfig: %v\n", err)
+		fmt.Printf("Error GetConfig kubeconfig: %v\n", err)
 		return nil, err
 	}
 	return config, nil
