@@ -45,6 +45,11 @@ func init() {
 Given a file with a list of users and their roles, the command reconciles the list against
 */
 func delete(fileName string, keyVault string) error {
+
+	if !user.HavePriviliges() {
+		return fmt.Errorf("Unable to delete users from appliance You have the priviliges")
+	}
+
 	/** Load the list of users from the file */
 	fmt.Println("Loading Users")
 	var um user.UserMap
@@ -60,8 +65,7 @@ func delete(fileName string, keyVault string) error {
 		return err
 	}
 
-	fmt.Println("Deleting Users")
-	err = sclient.DeleteUser(um)
+	err = sclient.GetUsers(um)
 	if err != nil {
 		return err
 	}

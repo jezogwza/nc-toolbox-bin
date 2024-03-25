@@ -20,7 +20,7 @@ type Appliance interface {
 	GetUsers(umap.UserMap) error
 
 	// DeleteUsera deletes the users in a UserMap.  Deleting a user that doesn't exist returns success
-	DeleteUsers(umap.UserMap) error
+	DeleteUsers(umap.UserMap) (umap.UserMap, error)
 
 	// DeleteUser deletes the given user.  Deleting a user that doesn't exist returns success
 	DeleteUser(username string) error
