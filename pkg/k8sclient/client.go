@@ -3,6 +3,7 @@ package k8sclient
 import (
 	"context"
 	"fmt"
+	"os"
 
 	"github.com/go-logr/logr"
 	"github.com/go-logr/zapr"
@@ -23,7 +24,8 @@ type KubernetesClient struct {
 
 func getKubeConfig() string {
 	// TODO : This should be read from the environment
-	return labels.KUBECONFIG
+	kubeConfigFile := os.Getenv(labels.KUBECONFIG_ENV_NAME)
+	return kubeConfigFile
 }
 
 func GetConfig() (*rest.Config, error) {

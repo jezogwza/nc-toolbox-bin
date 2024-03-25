@@ -9,7 +9,10 @@ const (
 	StorageApplianceApiVersion   = "platform.afo-nc.microsoft.com/v1"
 	StorageApplianceGroup        = "storageappliances.platform.afo-nc.microsoft.com"
 )
-const KUBECONFIG string = "c:\\Users\\ropacheco\\.kube\\config"
+const (
+	KUBECONFIG          string = "~/.kube/config"
+	KUBECONFIG_ENV_NAME        = "KUBECONFIG"
+)
 
 const (
 	StorageApplianceUserRoleArrayAdmin   string = "array_admin"

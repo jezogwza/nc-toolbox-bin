@@ -45,7 +45,7 @@ func init() {
 /*
 Given a file with a list of users and their roles, the command reconciles the list against
 */
-func create(fileName string, keyVault string) error {
+func delete(fileName string, keyVault string) error {
 	/** Load the list of users from the file */
 	fmt.Println("Loading Users")
 	var um user.UserMap
@@ -62,7 +62,7 @@ func create(fileName string, keyVault string) error {
 	}
 
 	fmt.Println("Deleting Users")
-	err = sclient.DeleteUsers(um)
+	um, err = sclient.DeleteUsers(um)
 	if err != nil {
 		return err
 	}
