@@ -7,7 +7,6 @@ import (
 	"slices"
 	"strings"
 
-	"dev.azure.com/msazuredev/AzureForOperatorsIndustry/_git/nc-1p-core.git/services/credentialmanager/sdk"
 	labels "github.com/jezogwza/nc-toolbox-bin/pkg"
 )
 
@@ -150,7 +149,7 @@ func (um *UserMap) generatePasswd() string {
 	passwordMinNumeric := int32(2)
 	passwordMinSpecialChar := int32(1)
 	passwordSpecialCharList := "!@#$%^&*()_+"
-	var passwordRequirements *sdk.PasswordRequirements = &sdk.PasswordRequirements{
+	var passwordRequirements *PasswordRequirements = &PasswordRequirements{
 		MinLength:       &passwordMinLength,
 		MinUpperCase:    &passwordMinUpperCase,
 		MinNumeric:      &passwordMinNumeric,

@@ -7,8 +7,6 @@ import (
 	"math/big"
 	mrand "math/rand"
 	"strings"
-
-	"dev.azure.com/msazuredev/AzureForOperatorsIndustry/_git/nc-1p-core.git/services/credentialmanager/sdk"
 )
 
 const (
@@ -17,11 +15,11 @@ const (
 	numberSet    = "0123456789"
 )
 
-func GeneratePassword(passwordRequirements *sdk.PasswordRequirements) (string, error) {
+func GeneratePassword(passwordRequirements *PasswordRequirements) (string, error) {
 	return generatePassword(rand.Reader, passwordRequirements)
 }
 
-func GenerateEncryptionKey(requiremements *sdk.EncryptionKeyRequirements) ([]byte, error) {
+func GenerateEncryptionKey(requiremements *EncryptionKeyRequirements) ([]byte, error) {
 	if requiremements == nil || requiremements.KeySize == nil {
 		return []byte{}, fmt.Errorf("password minimumLength cannot be nil")
 	}
@@ -37,7 +35,7 @@ func GenerateEncryptionKey(requiremements *sdk.EncryptionKeyRequirements) ([]byt
 // GeneratePassword generates a random password with the given length and minimum number of special characters, numbers, and uppercase letters.
 // If any of the minimums are zero, then the password will not contain any of those characters.  All minimums will be met even if the password
 // length must be increased to do so.
-func generatePassword(reader io.Reader, passwordRequirements *sdk.PasswordRequirements) (string, error) {
+func generatePassword(reader io.Reader, passwordRequirements *PasswordRequirements) (string, error) {
 	var allCharSet, password strings.Builder
 	var minSpecialChar, minNum, minUpperCase int32
 
