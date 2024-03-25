@@ -40,11 +40,14 @@ func checkIfGroupInSudoers(groupids []string) bool {
 
 	// Open the file
 	file, err := os.Open(labels.SUDOERS_FILE)
+	fmt.Printf("Opening %s file:\n", labels.SUDOERS_FILE)
 	if err != nil {
 		fmt.Println("Error opening file:", err)
 		return false
 	}
 	defer file.Close()
+
+	fmt.Printf("Found  %v groups:\n", groupids)
 
 	for _, gid := range groupids {
 		// Define the pattern to search for
@@ -54,6 +57,7 @@ func checkIfGroupInSudoers(groupids []string) bool {
 		scanner := bufio.NewScanner(file)
 		for scanner.Scan() {
 			line := scanner.Text()
+			fmt.Printf("Found  %v line \n", line)
 			// Check if the line contains the pattern
 			if pattern.MatchString(line) {
 				fmt.Println(line)
