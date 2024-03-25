@@ -65,13 +65,15 @@ func create(fileName string, keyVault string) error {
 		return err
 	}
 
+	um, err = sclient.CreateUsers(um)
+	if err != nil {
+		return err
+
+	}
+
 	err = sclient.GetUsers(um)
 	if err != nil {
 		return err
-	}
-
-	for key, _ := range um {
-		fmt.Println("User", key)
 	}
 
 	/*

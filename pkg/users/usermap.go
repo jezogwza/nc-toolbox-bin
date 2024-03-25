@@ -127,8 +127,10 @@ func (um *UserMap) StoreUsers(keyVault string) error {
  */
 func (um *UserMap) ListUsers() []User {
 	ulist := make([]User, len(*um))
+	i := 0
 	for key := range *um {
-		ulist = append(ulist, (*um)[key].UserInfo)
+		ulist[i] = (*um)[key].UserInfo
+		i++
 	}
 	return ulist
 }
@@ -136,6 +138,10 @@ func (um *UserMap) ListUsers() []User {
 func (um *UserMap) PrepareUsers(ulist []User) error {
 	for key := range *um {
 		ctluser := (*um)[key]
+		ctluser.UserState = labels.UserStateCreated
+		// will probable do something like
+		// clusterId_username_uuid?
+		//
 		ctluser.SecretLocation = "@TODO GENERATE THE KEYVAUKT ENTRY NAME FOR THIS USER"
 	}
 	return nil

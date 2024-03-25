@@ -50,6 +50,8 @@ github.com/jezogwza/nc-toolbox-bin v0.0.0-20240325170412-c111d6b4b7ad h1:HgCwXk5
 github.com/jezogwza/nc-toolbox-bin v0.0.0-20240325170412-c111d6b4b7ad/go.mod h1:6ekofdWDxs7oBREMxuBeCtGa5ZrdgXoFQpgE1nZdvME=
 github.com/jezogwza/nc-toolbox-bin v0.0.0-20240325172735-d61ecde67877 h1:NaghBxWp7ZfPehfscxl+48E9fFnaChghl2AqHspyq30=
 github.com/jezogwza/nc-toolbox-bin v0.0.0-20240325172735-d61ecde67877/go.mod h1:6ekofdWDxs7oBREMxuBeCtGa5ZrdgXoFQpgE1nZdvME=
+github.com/jezogwza/nc-toolbox-bin v0.0.0-20240325203320-93c5464d7597 h1:6tUYkr1WQYALEYxmeMNJ/fXXHBXFHgCETGcRkr+xvHg=
+github.com/jezogwza/nc-toolbox-bin v0.0.0-20240325203320-93c5464d7597/go.mod h1:6ekofdWDxs7oBREMxuBeCtGa5ZrdgXoFQpgE1nZdvME=
 github.com/josharian/intern v1.0.0 h1:vlS4z54oSdjm0bgjRigI+G1HpF+tI+9rE5LLzOg8HmY=
 github.com/josharian/intern v1.0.0/go.mod h1:5DoeVV0s6jJacbCEi61lwdGj/aVlrQvzHFFd8Hwg//Y=
 github.com/json-iterator/go v1.1.12 h1:PV8peI4a0ysnczrg+LtxykD8LfKY9ML6u2jnxaEnrnM=

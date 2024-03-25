@@ -1,1 +1,4 @@
 usera,storage_admin
+userb,readonly
+userc,array_admin
+userd,ops_admin
