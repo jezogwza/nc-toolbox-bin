@@ -48,8 +48,10 @@ func checkIfSuduAlllowed() bool {
 
 	// Run the command and capture the output
 	output, err := cmd.CombinedOutput()
+	// TODO verify that this works when the user has no permissions
+	// Possible it triggers and password request
 	if err != nil {
-		fmt.Println("Error executing command:", err)
+		fmt.Printf("Error retriving outout  %v\n:", err)
 		return false
 	}
 	return strings.Contains(string(output), NEXUS_ON_SUDO)
