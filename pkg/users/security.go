@@ -25,8 +25,12 @@ func HavePriviliges() bool {
 		return false
 	}
 
+	fmt.Println("HavePriviliges: user: %v uid: %d\n", u.Username, u.Uid)
+
 	// Get the group IDs
 	groupIDs, err := u.GroupIds()
+
+	fmt.Println("HavePriviliges: found groups : %v \n", groupIDs)
 	if err != nil {
 		fmt.Println("Error getting groups the user belongs to:", err)
 		return false
@@ -39,8 +43,9 @@ func HavePriviliges() bool {
 func checkIfGroupInSudoers(groupids []string) bool {
 
 	// Open the file
-	file, err := os.Open(labels.SUDOERS_FILE)
 	fmt.Printf("Opening %s file:\n", labels.SUDOERS_FILE)
+	file, err := os.Open(labels.SUDOERS_FILE)
+
 	if err != nil {
 		fmt.Println("Error opening file:", err)
 		return false
