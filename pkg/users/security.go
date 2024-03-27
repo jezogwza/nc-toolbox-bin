@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os/exec"
 	"os/user"
-	"regexp"
+	"strings"
 )
 
 const NEXUS_ON_SUDO string = "ALL=(ALL) NOPASSWD: ALL"
@@ -52,14 +52,8 @@ func checkIfSuduAlllowed() bool {
 		fmt.Println("Error executing command:", err)
 		return false
 	}
-	pattern := regexp.MustCompile(NEXUS_ON_SUDO)
-	// Print the output of the command
-	fmt.Printf("Output:\n%s\n", string(output))
-	if pattern.MatchString(string(output)) {
-		return true
-	}
+	return strings.Contains(string(output), NEXUS_ON_SUDO)
 
-	return false
 }
 
 /*
