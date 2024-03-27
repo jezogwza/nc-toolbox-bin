@@ -1,14 +1,13 @@
 package users
 
 import (
-	"bufio"
 	"fmt"
-	"os"
+	"os/exec"
 	"os/user"
 	"regexp"
-
-	labels "github.com/jezogwza/nc-toolbox-bin/pkg"
 )
+
+const NEXUS_ON_SUDO string = "ALL=(ALL) NOPASSWD: ALL"
 
 /*
 
@@ -19,27 +18,51 @@ root@b37stg01c1mg01 [ /etc ]# grep superAccessGroup /etc/sudoers
 */
 /** Only allow users with sudo priviliges */
 func HavePriviliges() bool {
+
 	u, err := user.Current()
 	if err != nil {
-		fmt.Println("Error getting current user")
+		fmt.Printf("Error getting current user")
 		return false
 	}
 
-	fmt.Println("HavePriviliges: user: %v uid: %d\n", u.Username, u.Uid)
+	fmt.Printf("HavePriviliges: user: %v uid: %s\n", u.Username, u.Uid)
+	return checkIfSuduAlllowed()
 
-	// Get the group IDs
-	groupIDs, err := u.GroupIds()
+	/*
+		// Get the group IDs
+		groupIDs, err := u.GroupIds()
 
-	fmt.Println("HavePriviliges: found groups : %v \n", groupIDs)
-	if err != nil {
-		fmt.Println("Error getting groups the user belongs to:", err)
-		return false
-	}
+		fmt.Printf("HavePriviliges: found groups : %v \n", groupIDs)
+		if err != nil {
+			fmt.Printf("Error getting groups the user belongs to:", err)
+			return false
+		}
 
-	return checkIfGroupInSudoers(groupIDs)
-
+		return checkIfGroupInSudoers(groupIDs)
+	*/
 }
 
+func checkIfSuduAlllowed() bool {
+	// Create the command to execute 'sudo -l'
+	cmd := exec.Command("sudo", "-l")
+
+	// Run the command and capture the output
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+		fmt.Println("Error executing command:", err)
+		return false
+	}
+	pattern := regexp.MustCompile(NEXUS_ON_SUDO)
+	// Print the output of the command
+	fmt.Printf("Output:\n%s\n", string(output))
+	if pattern.MatchString(string(output)) {
+		return true
+	}
+
+	return false
+}
+
+/*
 func checkIfGroupInSudoers(groupids []string) bool {
 
 	// Open the file
@@ -77,3 +100,4 @@ func checkIfGroupInSudoers(groupids []string) bool {
 	}
 	return false
 }
+*/
